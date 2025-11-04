@@ -65,7 +65,7 @@
         background-color: #bbada0;
         padding: 10px;
         border-radius: 15px;
-        touch-action: none; /* Prevent default scrolling on swipe */
+        touch-action: none;
     }
 
     .tile {
@@ -78,15 +78,27 @@
         color: #fff;
         border: 2px solid rgba(255,255,255,0.3);
         opacity: 0;
-        transition: opacity 0.2s ease, background-color 0.3s ease;
+        transform: scale(0.95);
+        transition: opacity 0.25s ease, background-color 0.3s ease, transform 0.25s ease;
         user-select: none;
     }
 
     .tile.visible {
         opacity: 1;
+        transform: scale(1);
     }
 
-    /* Tile Colors */
+    .tile.merged {
+        animation: mergeAnim 0.25s ease;
+    }
+
+    @keyframes mergeAnim {
+        0% { transform: scale(1.1); }
+        50% { transform: scale(1); }
+        100% { transform: scale(1); }
+    }
+
+    /* Tile colors */
     .tile-2 { background-color: #eee4da; color: #776e65; }
     .tile-4 { background-color: #ede0c8; color: #776e65; }
     .tile-8 { background-color: #f2b179; }
@@ -122,6 +134,7 @@
         align-items:center;
         z-index:10;
     }
+
     #winModalContent {
         background:#f9f6f2;
         padding:30px;
@@ -129,10 +142,12 @@
         text-align:center;
         max-width:300px;
     }
+
     #winModalContent h2 {
         margin-bottom:20px;
         color:#776e65;
     }
+
     #winModalContent p {
         margin-bottom:20px;
         color:#776e65;

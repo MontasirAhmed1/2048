@@ -5,15 +5,13 @@ const gridEl = document.getElementById('grid');
 const scoreEl = document.getElementById('scoreboard');
 const backBtn = document.getElementById('backBtn');
 const restartBtn = document.getElementById('restartBtn');
-
 const winModal = document.getElementById('winModal');
 const playAgainBtn = document.getElementById('playAgainBtn');
 
 let grid = [];
 let score = 0;
-let size = 4;
+const size = 4;
 
-// Initialize grid
 function initGrid() {
     grid = Array(size).fill(null).map(() => Array(size).fill(0));
     addRandomTile();
@@ -23,18 +21,16 @@ function initGrid() {
     updateScore();
 }
 
-// Add random tile
 function addRandomTile() {
     let empty = [];
     for (let r = 0; r < size; r++)
         for (let c = 0; c < size; c++)
             if (grid[r][c] === 0) empty.push([r, c]);
     if (empty.length === 0) return;
-    let [r, c] = empty[Math.floor(Math.random() * empty.length)];
+    const [r, c] = empty[Math.floor(Math.random() * empty.length)];
     grid[r][c] = Math.random() < 0.9 ? 2 : 4;
 }
 
-// Update grid
 function updateGrid() {
     gridEl.innerHTML = '';
     for (let r = 0; r < size; r++) {
@@ -50,10 +46,10 @@ function updateGrid() {
     }
 }
 
-// Score
-function updateScore() { scoreEl.textContent = `Score: ${score}`; }
+function updateScore() {
+    scoreEl.textContent = `Score: ${score}`;
+}
 
-// Slide logic
 function slide(row) {
     let arr = row.filter(v => v !== 0);
     for (let i = 0; i < arr.length - 1; i++) {
@@ -68,7 +64,6 @@ function slide(row) {
     return arr;
 }
 
-// Moves
 function moveLeft() {
     let moved = false;
     for (let r = 0; r < size; r++) {
@@ -78,6 +73,7 @@ function moveLeft() {
     }
     return moved;
 }
+
 function moveRight() {
     let moved = false;
     for (let r = 0; r < size; r++) {
@@ -87,6 +83,7 @@ function moveRight() {
     }
     return moved;
 }
+
 function moveUp() {
     let moved = false;
     for (let c = 0; c < size; c++) {
@@ -99,6 +96,7 @@ function moveUp() {
     }
     return moved;
 }
+
 function moveDown() {
     let moved = false;
     for (let c = 0; c < size; c++) {
@@ -112,7 +110,6 @@ function moveDown() {
     return moved;
 }
 
-// Check win
 function checkWin() {
     for (let r = 0; r < size; r++)
         for (let c = 0; c < size; c++)
@@ -123,7 +120,6 @@ function checkWin() {
     return false;
 }
 
-// Check game over
 function isGameOver() {
     for (let r = 0; r < size; r++)
         for (let c = 0; c < size; c++) {
@@ -131,11 +127,11 @@ function isGameOver() {
             if (c < size-1 && grid[r][c] === grid[r][c+1]) return false;
             if (r < size-1 && grid[r][c] === grid[r+1][c]) return false;
         }
-    setTimeout(()=>alert("Game Over! Score: "+score),100);
+    setTimeout(()=>alert(`Game Over! Score: ${score}`),100);
     return true;
 }
 
-// Keyboard
+// Keyboard control
 document.addEventListener('keydown', e => {
     if(winModal.style.display==='flex') return;
     let moved=false;
@@ -152,7 +148,7 @@ document.addEventListener('keydown', e => {
     }
 });
 
-// Touch support
+// Touch control
 let startX, startY;
 gridEl.addEventListener('touchstart', e=>{
     const touch = e.touches[0];
