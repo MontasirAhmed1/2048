@@ -66,6 +66,8 @@
         padding: 10px;
         border-radius: 15px;
         touch-action: none;
+        border: 3px solid #a39383;
+        position: relative;
     }
 
     .tile {
@@ -88,12 +90,16 @@
         transform: scale(1);
     }
 
+    .tile.move {
+        transition: transform 0.2s ease-in-out;
+    }
+
     .tile.merged {
         animation: mergeAnim 0.25s ease;
     }
 
     @keyframes mergeAnim {
-        0% { transform: scale(1.1); }
+        0% { transform: scale(1.05); }
         50% { transform: scale(1); }
         100% { transform: scale(1); }
     }
@@ -123,8 +129,8 @@
         gap: 10px;
     }
 
-    /* Win Modal */
-    #winModal {
+    /* Modal styles */
+    .modal {
         display:none;
         position:fixed;
         top:0; left:0;
@@ -135,20 +141,21 @@
         z-index:10;
     }
 
-    #winModalContent {
+    .modal-content {
         background:#f9f6f2;
         padding:30px;
         border-radius:15px;
         text-align:center;
         max-width:300px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
 
-    #winModalContent h2 {
+    .modal-content h2 {
         margin-bottom:20px;
         color:#776e65;
     }
 
-    #winModalContent p {
+    .modal-content p {
         margin-bottom:20px;
         color:#776e65;
     }
@@ -183,11 +190,20 @@
 </div>
 
 <!-- Win Modal -->
-<div id="winModal">
-    <div id="winModalContent">
+<div id="winModal" class="modal">
+    <div class="modal-content">
         <h2>🎉 Congratulations! 🎉</h2>
-        <p>You've reached 2048!</p>
+        <p>You've reached 2048!<br>Your score was <span id="winScore"></span></p>
         <button id="playAgainBtn">Play Again</button>
+    </div>
+</div>
+
+<!-- Lose Modal -->
+<div id="loseModal" class="modal">
+    <div class="modal-content">
+        <h2>😢 You Lost!</h2>
+        <p>Your score was <span id="loseScore"></span></p>
+        <button id="tryAgainBtn">Try Again</button>
     </div>
 </div>
 

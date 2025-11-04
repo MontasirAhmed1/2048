@@ -6,18 +6,24 @@ const scoreEl = document.getElementById('scoreboard');
 const backBtn = document.getElementById('backBtn');
 const restartBtn = document.getElementById('restartBtn');
 const winModal = document.getElementById('winModal');
+const loseModal = document.getElementById('loseModal');
+const winScore = document.getElementById('winScore');
+const loseScore = document.getElementById('loseScore');
 const playAgainBtn = document.getElementById('playAgainBtn');
+const tryAgainBtn = document.getElementById('tryAgainBtn');
 
 let grid = [];
 let score = 0;
 const size = 4;
+let hasWon = false;
 
 function initGrid() {
     grid = Array(size).fill(null).map(() => Array(size).fill(0));
     addRandomTile();
     addRandomTile();
-    updateGrid();
     score = 0;
+    hasWon = false;
+    updateGrid();
     updateScore();
 }
 
@@ -111,9 +117,12 @@ function moveDown() {
 }
 
 function checkWin() {
+    if (hasWon) return;
     for (let r = 0; r < size; r++)
         for (let c = 0; c < size; c++)
             if (grid[r][c] === 2048) {
+                hasWon = true;
+                winScore.textContent = score;
                 winModal.style.display = 'flex';
                 return true;
             }
@@ -127,13 +136,14 @@ function isGameOver() {
             if (c < size-1 && grid[r][c] === grid[r][c+1]) return false;
             if (r < size-1 && grid[r][c] === grid[r+1][c]) return false;
         }
-    setTimeout(()=>alert(`Game Over! Score: ${score}`),100);
+    loseScore.textContent = score;
+    loseModal.style.display = 'flex';
     return true;
 }
 
 // Keyboard control
 document.addEventListener('keydown', e => {
-    if(winModal.style.display==='flex') return;
+    if (winModal.style.display==='flex' || loseModal.style.display==='flex') return;
     let moved=false;
     if(e.key==='ArrowLeft') moved=moveLeft();
     else if(e.key==='ArrowRight') moved=moveRight();
@@ -156,7 +166,7 @@ gridEl.addEventListener('touchstart', e=>{
     startY=touch.clientY;
 });
 gridEl.addEventListener('touchend', e=>{
-    if(winModal.style.display==='flex') return;
+    if (winModal.style.display==='flex' || loseModal.style.display==='flex') return;
     const touch = e.changedTouches[0];
     const dx = touch.clientX-startX;
     const dy = touch.clientY-startY;
@@ -190,5 +200,9 @@ backBtn.addEventListener('click', ()=>{
 restartBtn.addEventListener('click', ()=>initGrid());
 playAgainBtn.addEventListener('click', ()=>{
     winModal.style.display='none';
+    initGrid();
+});
+tryAgainBtn.addEventListener('click', ()=>{
+    loseModal.style.display='none';
     initGrid();
 });
